@@ -53,8 +53,8 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  updateProduct(quantity:Number){
-    this.product.quantity=quantity;
+  updateProduct(quantity:any){
+    this.product.quantity=Number(quantity);
     this.product_service.update(this.product).subscribe(result =>{
       if(result['types']){
         this.presentToast('The product has been updated',2000);
@@ -64,12 +64,12 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  async presentToast(message,duration:number,header=true) {
+  async presentToast(message,duration:any,header=true) {
     const toast = await this.toastController.create({
       header: header?'Sucessfully':'Failed',
       message,
       position: 'top',
-      duration
+      duration:Number(duration)
     });
     toast.present();
 
