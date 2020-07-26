@@ -1,0 +1,50 @@
+.flex-design{
+	display: flex;
+}
+
+.flex-1{
+	flex: 1;
+	align-self: center;
+}
+
+.flex-2{
+	flex: 2;
+}
+
+.image_cash{
+	width: 80%;
+	background-position-y: center;
+}
+
+@media screen and (min-width: 200px) and (max-width: 900px) {
+	.line_chart{
+		display: flex;
+		width: 100%;
+	}
+	.line_chart_2{
+		width: 100%;
+	}
+	.pie_income_chart{
+		flex:1; width: 100%;
+	}
+	.pie_chart{
+		flex:1; width: 100%;
+	}
+}
+
+@media screen and (min-width: 910px) and (max-width: 2000px) {
+	.line_chart{
+		display: flex;
+		/* justify-content: center; */
+		width: 100%;
+	}
+	.line_chart_2{
+		width: 100%; padding: 0% 25%
+	}
+	.pie_income_chart{
+		flex:1; width: 20%; height: 20%;
+	}
+	.pie_chart{
+		flex:1; width: 20%; height: 20%;
+	}
+}

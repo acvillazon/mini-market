@@ -1,0 +1,23 @@
+.title_botton{
+	display: flex;
+	justify-content: space-between;
+}
+
+.phone_age{
+	display: flex;
+}
+
+.phone_style{
+	flex: 1;
+	margin-right: 10px;
+}
+
+.age_style{
+	flex: 1;
+	margin-left: 10px;
+}
+
+.flex-design{
+	display: flex;
+	margin: 10px 0px;
+}
