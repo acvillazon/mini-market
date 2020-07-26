@@ -1,0 +1,80 @@
+<ion-card mode="md">
+  <ion-card-header>
+    <ion-card-title>Create Product</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content style="padding: 10px;">
+    <!-- Inputs with labels -->
+    <form autocomplete="off" (ngSubmit)="createProduct(form)" #form="ngForm">
+
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+          <ion-input class="form-control"
+            type="text"
+            name="name"
+            placeholder="name"
+            required
+            minlength="5"
+            [class.is-invalid]="name.invalid && name.touched"
+            [ngModel]="product.name"
+            #name="ngModel">
+          </ion-input>
+          <small *ngIf="name.invalid && name.touched" 
+            class="form-text text-danger">At least 5 characters
+          </small>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Type</ion-label>
+          <ion-select class="form-control"
+            name="type_id"
+            required
+            [disabled]="types.length==0"
+            [class.is-invalid]="types_.invalid && types_.touched"
+            [ngModel]="product.type_id"
+            #types_="ngModel">
+              <ion-select-option placeholder="Choose an option" *ngFor="let item of types"
+                [value]="item.id_type">{{item.name_type}}
+              </ion-select-option>
+          </ion-select>
+          <small *ngIf="types_.invalid && types_.touched" 
+            class="form-text text-danger">The field is required
+          </small>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Price</ion-label>
+          <ion-input class="form-control"
+            type="number"
+            name="price"
+            placeholder="$0"
+            required
+            minlength="100" 
+            [ngModel]="product.price"
+            [class.is-invalid]="price.invalid && price.touched"
+            #price="ngModel">
+          </ion-input>
+          <small *ngIf="price.invalid && price.touched" 
+            class="form-text text-danger">At least $100</small>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label position="floating">Quantity</ion-label>
+          <ion-input class="form-control"
+            type="number"
+            name="quantity"
+            placeholder="0"
+            required
+            min="1" 
+            [ngModel]="product.quantity"
+            [class.is-invalid]="quantity.invalid && quantity.touched"
+            #quantity="ngModel">
+          </ion-input>
+          <small *ngIf="quantity.invalid && quantity.touched" 
+            class="form-text text-danger">At least 1 unit</small>
+      </ion-item>
+
+      <ion-button type="submit" expand="block">Create</ion-button>  
+    </form>
+  </ion-card-content>
+</ion-card>
