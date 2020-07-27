@@ -1,0 +1,64 @@
+<ion-content *ngIf="product">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>ID: {{product.id_product}}</ion-card-subtitle>
+      <ion-card-title>{{product.name_product}}</ion-card-title>
+    </ion-card-header>
+    <div style="margin:20px">
+      
+      <div>
+        <ion-text color="dark">
+            <h4>Type of product </h4>
+        </ion-text>
+        <h5>{{product.name_type}}</h5>
+      </div>
+
+      <div>
+        <ion-text color="dark">
+            <h4>Price</h4>
+        </ion-text>
+        <h5>$ {{product.price}}</h5>
+      </div>
+      
+      <div>
+        <ion-text color="dark">
+            <h4>Stock (current)</h4>
+        </ion-text>
+        <h5>{{product.quantity}} units</h5>
+      </div>
+      
+      <div>
+        <ion-text color="dark">
+            <h4>Stock (historical)</h4>
+        </ion-text>
+        <h5>{{product.historical}} units</h5>
+      </div>
+     
+      <ion-text color="dark">
+        <h5>
+          Availability: 
+          <ion-badge *ngIf="product['quantity'] > 0" color="success">available</ion-badge>
+          <ion-badge *ngIf="product['quantity'] <= 0" color="danger">out of stock</ion-badge>
+        </h5>
+      </ion-text>
+      
+    </div>
+  </ion-card>  
+</ion-content>
+<ion-fab *ngIf="product" vertical="bottom" horizontal="end">
+  <ion-fab-button routerLink="/tabs/product/update/{{product.id_product}}"><ion-icon name="create-outline"></ion-icon></ion-fab-button>
+</ion-fab>
+
+<!--<ion-fab *ngIf="product" vertical="bottom" horizontal="end">
+  <ion-fab-button [routerLink]="[ '/update', product.id_product]"><ion-icon name="create-outline"></ion-icon></ion-fab-button>
+</ion-fab>-->
+
+<!--historical: "300"
+id_product: "14"
+id_type: "18"
+name_product: "Huevos"
+name_type: "Lacteos"
+price: "800"
+quantity: "220"
+state_product: "1"
+type_id: "18"-->

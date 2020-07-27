@@ -8,6 +8,7 @@ import { QrPageRoutingModule } from './qr-routing.module';
 
 import { QrPage } from './qr.page';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   providers:[
@@ -19,6 +20,6 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
     IonicModule,
     QrPageRoutingModule
   ],
-  declarations: [QrPage]
+  declarations: [QrPage,DetailsComponent]
 })
 export class QrPageModule {}

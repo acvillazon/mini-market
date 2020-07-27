@@ -1,35 +1,43 @@
-<ion-card mode="md" *ngIf="product">
-  <ion-card-header>
-    <ion-card-subtitle>ID: {{product.id_product}}</ion-card-subtitle>
-    <ion-card-title>{{product.name_product}}</ion-card-title>
-  </ion-card-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>UPDTADE PRODUCT</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-card-content style="padding: 10px;">
-    <!-- Inputs with labels -->
-    <ion-item>
-      <ion-label position="floating">Name</ion-label>
-      <ion-input type="text" minlength="2" maxlength="30" required [(ngModel)]='product.name_product'></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select required [value]="product.type_id">
-        <ion-select-option *ngFor="let item of types" [value]="item.id_type">{{item.name_type}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label position="floating">Price</ion-label>
-      <ion-input type="number" min="50" required [(ngModel)]='product.price'></ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label position="floating">Quantity (stock: {{product.quantity}} )</ion-label>
-      <ion-input #quantity type="number" min="1" required value="0"></ion-input>
-    </ion-item>
-
-    <br>
-    <ion-button (click)="updateProduct(quantity.value)" expand="full" color="primary">Update</ion-button>
-
-  </ion-card-content>
-</ion-card>
+<ion-content>
+  <ion-card *ngIf="product">
+    <ion-card-header>
+      <ion-card-subtitle>ID: {{product.id_product}}</ion-card-subtitle>
+      <ion-card-title>{{product.name_product}}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content style="padding: 10px;">
+      <!-- Inputs with labels -->
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" minlength="2" maxlength="30" required [(ngModel)]='product.name_product'></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select required [value]="product.type_id">
+          <ion-select-option *ngFor="let item of types" [value]="item.id_type">{{item.name_type}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">Price</ion-label>
+        <ion-input type="number" min="50" required [(ngModel)]='product.price'></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">Quantity (stock: {{product.quantity}} )</ion-label>
+        <ion-input #quantity type="number" min="1" required value="0"></ion-input>
+      </ion-item>
+  
+      <br>
+      <ion-button (click)="updateProduct(quantity.value)" expand="full" color="primary">Update</ion-button>
+  
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -20,21 +20,34 @@ export class ProductPage implements OnInit, OnDestroy {
   public products:Product[];
   public unscribeProduct:any;
 
-  constructor(private product_service:ProductService) {
-    
+  constructor(private product_service:ProductService) {}
+
+  ngOnInit(){
+  }
+
+  ionViewWillEnter(){
+    this.loadProducts();
+
   }
 
   ngOnDestroy(): void {
-    this.unscribeProduct.unscribeProduct();
-  }
-
-  ngOnInit() {
-    this.loadProducts();
+    this.unscribeProduct.unsubscribe();
   }
 
   loadProducts(){
     this.unscribeProduct = this.product_service.getProducts().subscribe((data:any) =>{
       this.products=data.products;
     });
+  }
+
+  doRefresh(event:any){  
+    this.products=[];  
+    this.unscribeProduct = this.product_service.getProducts().subscribe((data:any) =>{
+      setTimeout(()=>{
+        this.products=data.products;
+        event.target.complete();
+      },1000)
+    });
+
   }
 }
