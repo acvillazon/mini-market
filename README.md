@@ -37,7 +37,8 @@ Luego pasaremos a nuestro archivo config y lo recomendable es que modifiquemos n
 
 Una ultima observación, para el correcto funcionamiento debemos tener en cuenta que las tablas referentes a los tipos de usuario (roles) y tipo de product (type_product), deberemos llenarla mediante comando SQL, ya que no existe apartado en la Web para llenar estos campos, esto porque son tablas ENUM, deberán ser llenadas con antelación.
 
-### APP Mini Market 🔧
+
+# APP Mini Market 🔧
 
 Mediante la app podrás gestionar tus productos, desde agregar nuevos hasta modificar los existentes. Además cuenta con un lector QR, cuyo fin es aprovechar la capacidad de nuestra cámara, a partir de ella podremos leer códigos QR validos que nos dirijan a los detalles de cierto producto en particular, a partir de aquí podrás realizar operaciones de actualización de datos. Nuestro lector sin duda nos ayudara en caso que tengamos miles de productos y queremos saber de uno. 
 
@@ -47,7 +48,7 @@ Mediante la app podrás gestionar tus productos, desde agregar nuevos hasta modi
 * [Angular 9](https://angular.io)
 * Mysql
 
-# Formato QR
+## Formato QR
 Texo plano, como contenido el ID del producto.
 
 [![Epayco|Solid](https://chart.googleapis.com/chart?cht=qr&chl=14&chs=180x180&choe=UTF-8&chld=L|2)](https://es.qr-code-generator.com)
