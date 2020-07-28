@@ -10,50 +10,52 @@
     slot="fixed" 
     (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
-      style="height: auto!important;"
+      class="size-max"
       refreshingSpinner="crescent"
       refreshingText="Refreshing...">
     </ion-refresher-content>
 
   </ion-refresher>
-          <ion-card color="warning" *ngIf="products && products.length==0" >
-            <ion-card-header>
-              <ion-card-title>No results</ion-card-title>
-            </ion-card-header>
-          
-            <ion-card-content>
-              There are no products registered
-            </ion-card-content>
-          </ion-card>
+    <ion-card color="warning" *ngIf="products && products.length==0" >
+      <ion-card-header>
+        <ion-card-title>No results</ion-card-title>
+      </ion-card-header>
     
-          <!-- List of Sliding Items -->
-          <ion-list *ngIf="products && products.length>0">
-    
-            <ion-list-header lines="inset">
-              <ion-label>Name</ion-label>
-              <ion-label>Quantity</ion-label>
-              <ion-label>Price</ion-label>
-              <ion-label>Availability</ion-label>
-            </ion-list-header>
-            <br>
-    
-            <ion-item-sliding *ngFor="let item of products; let i=index">
-              
-              <ion-item lines="inset">
-                <ion-label>{{item.name_product}}</ion-label>
-                <ion-label>{{item.quantity}}</ion-label>
-                <ion-label>{{item.price}}</ion-label>
-                <ion-badge *ngIf="item['quantity'] > 0" color="success">available</ion-badge>
-                <ion-badge *ngIf="item['quantity'] <= 0" color="danger">out of stock</ion-badge>
-              </ion-item>
-    
-              <ion-item-options side="end">
-                <ion-item-option [routerLink]="['update',item.id_product]" color="primary">Modify</ion-item-option>
-              </ion-item-options>
-            
-            </ion-item-sliding>
-            
-          </ion-list>
+      <ion-card-content>
+        There are no products registered
+      </ion-card-content>
+    </ion-card>
+
+    <!-- List of Sliding Items -->
+    <ion-list *ngIf="products && products.length>0">
+
+      <ion-list-header lines="inset">
+        <ion-label>Name</ion-label>
+        <ion-label>Quantity</ion-label>
+        <ion-label>Price</ion-label>
+        <ion-label>Availability</ion-label>
+      </ion-list-header>
+      <br>
+
+      <ion-item-sliding *ngFor="let item of products; let i=index">
+        
+        <ion-item lines="inset">
+          <ion-label>{{item.name_product}}</ion-label>
+          <ion-label>{{item.quantity}}</ion-label>
+          <ion-label>{{item.price}}</ion-label>
+          <ion-badge *ngIf="item['quantity'] > 0" color="success">available</ion-badge>
+          <ion-badge *ngIf="item['quantity'] <= 0" color="danger">out of stock</ion-badge>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option 
+            [routerLink]="['update',item.id_product]" 
+            color="primary">Modify</ion-item-option>
+        </ion-item-options>
+      
+      </ion-item-sliding>
+      
+    </ion-list>
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end">

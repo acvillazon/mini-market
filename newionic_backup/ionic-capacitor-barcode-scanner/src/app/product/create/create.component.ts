@@ -3,6 +3,7 @@ import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-create',
@@ -11,13 +12,15 @@ import { NgForm } from '@angular/forms';
 })
 export class CreateComponent implements OnInit {
 
-  public product:any={
-    name:'',
+  public product:Product={
+    name_product:'',
     price:100,
     quantity:1,
-    type_id:null
+    type_id:null,
+    historical:null,
+    id_product:null
   }
-
+  
   public types:any=[];
 
   constructor(private product_service:ProductService, 

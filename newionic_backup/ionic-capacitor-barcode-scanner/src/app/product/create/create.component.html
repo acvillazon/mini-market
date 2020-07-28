@@ -1,14 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>CREATE PRODUCT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Create Product</ion-card-title>
-    </ion-card-header>
-
     <ion-card-content style="padding: 10px;">
       <!-- Inputs with labels -->
       <form autocomplete="off" (ngSubmit)="createProduct(form)" #form="ngForm">
         <ion-item>
-          <ion-label position="floating">Name</ion-label>
+          <ion-label color="primary" position="floating">
+            <h1>Name</h1>
+          </ion-label>
             <ion-input class="form-control"
               type="text"
               name="name"
@@ -16,7 +20,7 @@
               required
               minlength="5"
               [class.is-invalid]="name.invalid && name.touched"
-              [ngModel]="product.name"
+              [ngModel]="product.name_product"
               #name="ngModel">
             </ion-input>
             <small *ngIf="name.invalid && name.touched" 
@@ -25,7 +29,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label>Type</ion-label>
+          <ion-label color="primary" >Type</ion-label>
             <ion-select class="form-control"
               name="type_id"
               required
@@ -43,7 +47,9 @@
         </ion-item>
   
         <ion-item>
-          <ion-label position="floating">Price</ion-label>
+          <ion-label color="primary" position="floating">
+            <h1>Price</h1>
+          </ion-label>
             <ion-input class="form-control"
               type="number"
               name="price"
@@ -59,7 +65,9 @@
         </ion-item>
        
         <ion-item>
-          <ion-label position="floating">Quantity</ion-label>
+          <ion-label color="primary" position="floating">
+            <h1>Quantity</h1>
+          </ion-label>
             <ion-input class="form-control"
               type="number"
               name="quantity"

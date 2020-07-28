@@ -15,39 +15,35 @@ interface Product{
   templateUrl: './product.page.html',
   styleUrls: ['./product.page.scss'],
 })
-export class ProductPage implements OnInit, OnDestroy {
+export class ProductPage implements OnDestroy {
 
   public products:Product[];
   public unscribeProduct:any;
 
   constructor(private product_service:ProductService) {}
 
-  ngOnInit(){
-  }
+  ionViewWillEnter():void { this.loadProducts(); }
 
-  ionViewWillEnter(){
-    this.loadProducts();
-
-  }
-
-  ngOnDestroy(): void {
-    this.unscribeProduct.unsubscribe();
-  }
+  ngOnDestroy(): void { this.unscribeProduct.unsubscribe(); }
 
   loadProducts(){
-    this.unscribeProduct = this.product_service.getProducts().subscribe((data:any) =>{
-      this.products=data.products;
-    });
+    this.unscribeProduct = this.product_service
+      .getProducts()
+        .subscribe((data:any) =>{
+          this.products=data.products;
+     });
   }
 
   doRefresh(event:any){  
     this.products=[];  
-    this.unscribeProduct = this.product_service.getProducts().subscribe((data:any) =>{
-      setTimeout(()=>{
-        this.products=data.products;
-        event.target.complete();
-      },1000)
-    });
+    this.unscribeProduct = this.product_service
+      .getProducts()
+        .subscribe((data:any) =>{
 
+          setTimeout(()=>{
+            this.products=data.products;
+            event.target.complete();
+          },1000)
+        });
   }
 }
