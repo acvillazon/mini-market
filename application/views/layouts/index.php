@@ -133,19 +133,33 @@
             <div class="dashboard-ecommerce">
                 <div class="container-fluid dashboard-content ">
 
-				<?php if(isset($message[0]) && count($message[0])) {?>
-					<div class="alert <?php echo $class.'' ?>" role="alert">
-						<ul>
-							<?php foreach ($message[0] as $key => $value) { ?>
-								<li><?php echo $value ?></li>
-							<?php } ?>
-						</ul>
-					</div>
-				<?php } ?>
+                <!-- Validation FORM  -->
+                <?php if(validation_errors()) { ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul>
+                            <?php echo validation_errors('<li>', '</li>'); ?>
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php } ?>
 
-				<div class="container-fluid">
-					<?php $this->load->view($content)?>
-				</div>
+
+												<!-- Other Messages -->
+								<?php if(isset($message[0]) && count($message[0])) {?>
+									<div class="alert <?php echo $class.'' ?>" role="alert">
+										<ul>
+											<?php foreach ($message[0] as $key => $value) { ?>
+												<li><?php echo $value ?></li>
+											<?php } ?>
+										</ul>
+									</div>
+								<?php } ?>
+
+								<div class="container-fluid">
+									<?php $this->load->view($content)?>
+								</div>
 
                 </div>
             </div>
@@ -164,19 +178,6 @@
 	<script src="<?php echo base_url('/public').'/assets/vendor/bootstrap/js/bootstrap.bundle.js'?>"></script>
 	<script src="<?php echo base_url('/public').'/assets/vendor/slimscroll/jquery.slimscroll.js'?>"></script>
 	<script src="<?php echo base_url('/public').'/assets/libs/js/main-js.js'?>"></script>
-
-	<!-- bootstap bundle js -->
-    <!-- slimscroll js -->
-    <!-- main js -->
-    <!-- chart chartist js -->
-    <!-- <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"></script> -->
-    <!-- sparkline js -->
-    <!-- morris js -->
-    <!-- chart c3 js -->
-    <!-- <script src="assets/vendor/charts/c3charts/c3.min.js"></script> -->
-    <!-- <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script> -->
-    <!-- <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script> -->
-    <!-- <script src="assets/libs/js/dashboard-ecommerce.js"></script>  -->
 </body>
  
 </html>

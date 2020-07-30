@@ -18,9 +18,9 @@ class SaleModel extends CI_Model
 
 		$sell = array(
 			'user_id' => $this->input->post('user_id'),
-			'product_id' => $data->id_product,
-			'quantity_sales' => $data->quantity,
-			'total' => $data->total,
+			'product_id' => $data['id_product'],
+			'quantity_sales' => $data['quantity'],
+			'total' => $data['total'],
 			'created_at' => date('Y-m-d H:i:s')
 		);
 
@@ -28,9 +28,7 @@ class SaleModel extends CI_Model
 			$stock = $this->updateStock($data);
 
 			if($stock){
-				//INSERT -> devuelve true or false;
-				$response = $this->db->insert('sales',$sell);
-				
+				$response = $this->db->insert('sales',$sell);				
 				if(!$response){ return $this->db->error(); }
 				return $response;
 
@@ -44,22 +42,22 @@ class SaleModel extends CI_Model
 	}
 
 	public function updateStock($data){
-		$query = $this->db->get_where('product', array('id_product' => $data->id_product));
+		$query = $this->db->get_where('product', array('id_product' => $data['id_product']));
 		$result = $query->row();
 		
 		if(!$result){
 			return false;
 		}
 		
-		if((int)$data->quantity > (int)$result->quantity){
+		if((int)$data['quantity'] > (int)$result->quantity){
 			return false;
 		}
 
 		$product = array(
-			'quantity' => (int)$result->quantity - (int)$data->quantity,
+			'quantity' => (int)$result->quantity - (int)$data['quantity'],
 		);
 
-		$this->db->where('id_product', $data->id_product);
+		$this->db->where('id_product', $data['id_product']);
 		$update = $this->db->update('product',$product);
 
 		if(!$update){

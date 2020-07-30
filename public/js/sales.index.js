@@ -14,9 +14,9 @@ function addToCart() {
 	if (Number(current_id) == -1) {
 		return alert("Choose an product");
 	}
-	
-	if(Number(document.getElementById("inputQuantity").value) <= 0){
-	    return alert('Quantity min: 1');
+
+	if (Number(document.getElementById("inputQuantity").value) <= 0) {
+		return alert("Quantity min: 1");
 	}
 
 	//GET ID PRODUCT
@@ -46,14 +46,14 @@ function addToCart() {
 
 	product.quantity = Number(product.quantity) - quantity;
 
-	if (cart[`${id_product}`]) {
-		cart[`${id_product}`]["quantity"] =
-			Number(cart[`${id_product}`]["quantity"]) + Number(quantity);
-		cart[`${id_product}`]["total"] =
-			Number(cart[`${id_product}`]["total"]) + Number(total);
+	if (cart[`${product_name}`]) {
+		cart[`${product_name}`]["quantity"] =
+			Number(cart[`${product_name}`]["quantity"]) + Number(quantity);
+		cart[`${product_name}`]["total"] =
+			Number(cart[`${product_name}`]["total"]) + Number(total);
 	} else {
-		cart[`${id_product}`] = {};
-		cart[`${id_product}`] = {
+		cart[`${product_name}`] = {};
+		cart[`${product_name}`] = {
 			id_product,
 			product_name,
 			quantity: Number(quantity),
@@ -64,8 +64,8 @@ function addToCart() {
 	document.getElementById("inputQuantity").value = "";
 	document.getElementById("inputProduct").value = -1;
 	writeInTable(id_product, product_name, quantity, price, total);
-	
-    product = null;
+
+	product = null;
 	price = 0;
 	current_id = -1;
 }

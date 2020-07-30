@@ -11,7 +11,6 @@
 	<div class="flex-2">
 		<h2> CASHIER</h2>
 		<form method="POST">
-			<?php echo validation_errors(); ?>
 			<div class="form-group">
 					<label>Select Product</label>
 					<select id="inputProduct" onchange="currentProductPrice()" class="form-control" required>

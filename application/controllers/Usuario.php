@@ -9,8 +9,34 @@ class Usuario extends CI_Controller
 		parent::__construct();
 		$this->load->model('UsuarioModel');
 		$this->load->library('session');
+		$this->load->library('form_validation');
 
+		$validate = $this->UserValidation();
+		$this->form_validation->set_rules('name','Name',$validate['name']);
+		$this->form_validation->set_rules('country','Country',$validate['country']);
+		$this->form_validation->set_rules('city','City',$validate['city']);
+		$this->form_validation->set_rules('phone','Phone Number',$validate['phone']);
+		$this->form_validation->set_rules('age','Age',$validate['age']);
+		$this->form_validation->set_rules('address','Address',$validate['address']);
 	}
+
+	public function UserValidation(){
+
+		$validate['name']=['alpha_numeric_spaces','required','min_length[2]','max_length[50]'];
+		$validate['email']=['trim','required','min_length[5]','max_length[50]','is_unique[user.email]','valid_email'];
+
+		$validate['password']=['trim','required','min_length[5]','max_length[12]'];
+		$validate['password_']=['trim','required','matches[password]'];
+
+		$validate['country']=['alpha_numeric_spaces','required','min_length[2]','max_length[50]'];
+		$validate['city']=['alpha_numeric_spaces','required','min_length[2]','max_length[50]'];
+		$validate['phone']=['required','min_length[3]','max_length[20]'];
+		$validate['age']=['numeric','required','min_length[2]','max_length[5]'];
+		$validate['address']=['required','min_length[5]','max_length[30]'];
+
+		return $validate;
+	}
+	
 
 	/**
 	 * Mecanismo para guardar los mensajes de alert, usando flashdata.
@@ -91,21 +117,28 @@ class Usuario extends CI_Controller
 		$info['content'] = 'usuario/create';
 		$this->load->view('layouts/index', $info);
 	}
-	
+
+
 	public function store()
-	{		
-		$response = $this->UsuarioModel->store_user();
+	{	
+		$validate=$this->UserValidation();
+		$this->form_validation->set_rules('email','Email Address',$validate['email'], 
+		array('is_unique'=>'Email has already been used'));
+
+		$this->form_validation->set_rules('password','Password',$validate['password']);
+		$this->form_validation->set_rules('password_','Password Confirmation',$validate['password_']);
+
+		if(!$this->form_validation->run()){
+			$info['content'] = 'usuario/create';
+			return $this->load->view('layouts/index', $info);
+		}
+
+		$response = $this->UsuarioModel->store_user('email',$validate['email']);
 
 		if(!is_array($response) && $response){
 			$this->setSession('A new user was added','alert-success');
 		}else{
-
-			if($response==false){
-				$this->setSession('The user was not saved, an internal error happened','alert-danger');
-			} elseif($response['code'] == 1062){
-				$this->setSession('Email has already been used','alert-warning');
-			}
-
+			$this->setSession('The user was not saved, an internal error happened','alert-danger');
 			redirect('/usuario/create');
 		}
 
@@ -138,6 +171,14 @@ class Usuario extends CI_Controller
 			$this->setSession('The parameter ID is required in the URL','alert-danger');
 			redirect('/usuario');
 		}
+		
+		$validate['email']=['trim','required','min_length[5]','max_length[50]','valid_email'];
+		$this->form_validation->set_rules('email','Email Address',$validate['email']);
+
+		if(!$this->form_validation->run()){
+			$info['content'] = 'usuario/edit';
+			return $this->load->view('layouts/index', $info);
+		}
 
 		$response = $this->UsuarioModel->edit_user($id);
 
@@ -165,7 +206,7 @@ class Usuario extends CI_Controller
 
 		$response = $this->UsuarioModel->delete_user($id);
 
-		if(!$response || is_array($response)){
+		if($response[1]==0 && !$response[0]){
 			$this->setSession('The user with ID: '.$id.' was not deleted','alert-danger');
 		}else{
 			$this->setSession('The user with ID: '.$id.' has been deleted','alert-warning');

@@ -30,10 +30,6 @@ class ProductModel extends CI_Model
 	
 	public function store_product(){
 	    
-	    if((int)$this->input->post('type_id')==-1){
-	        return false;
-	    }
-
 		$data = array(
 			'price' => $this->input->post('price'),
 			'quantity' => $this->input->post('quantity'),
@@ -43,11 +39,8 @@ class ProductModel extends CI_Model
 		);
 		
 		try {
-			//INSERT -> devuelve true or false;
 			$response = $this->db->insert('product',$data);
-			
 			if(!$response){ return $this->db->error(); }
-
 			return $response;
 		} catch (Exception $e) {
 			return false;
@@ -69,7 +62,6 @@ class ProductModel extends CI_Model
 			);
 			
 			try {
-				//INSERT -> devuelve true or false;
 				$this->db->where('id_product', $id);
 				$response = $this->db->update('product',$data);
 	
@@ -86,47 +78,14 @@ class ProductModel extends CI_Model
 	
 	public function delete_product($id){		
 		try {
-			//INSERT -> devuelve true or false;
 			$this->db->where('id_product', $id);
 			$response = $this->db->delete('product');
+			$rows_affected = $this->db->affected_rows();
 
 			if(!$response){ return $this->db->error(); }
 
-			return $response;
+			return [$response,$rows_affected];
 		} catch (Exception $e) {
-			return false;
-		}
-	}
-
-
-
-
-	////API
-	public function update_product_api($product){
-		$query = $this->db->query('SELECT * FROM product WHERE id_product='.$product->id_product);
-		$result = $query->row();
-
-		if($result){
-
-			$data = array(
-				'price' => (int)$product->price,
-				'quantity' => $product->quantity+(int)$result->quantity,
-				'historical' => $product->quantity+(int)$result->historical,
-				'type_id' => $product->type_id,
-				'name_product' => $product->name_product,
-			);
-
-			print_r($data);
-			
-			try {
-				//INSERT -> devuelve true or false;
-				$this->db->where('id_product', $product->id_product);
-				return $this->db->update('product',$data);
-			} catch (Exception $e) {
-				return false;
-			}
-
-		}else{
 			return false;
 		}
 	}

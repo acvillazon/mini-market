@@ -10,6 +10,27 @@ class Api extends CI_Controller
 		parent::__construct();
 		$this->load->model('ApiModel');
 		$this->load->library('session');
+		$this->load->library('form_validation');
+	}
+
+	public function ProductValidation(){
+		$validate['name']=['alpha_numeric_spaces','required','min_length[2]','max_length[50]'];
+		$validate['type_id']=['numeric','required','min_length[1]','callback_correct_type'];
+		$validate['price']=['numeric','required','min_length[1]'];
+		$validate['quantity']=['numeric','required','min_length[1]'];
+
+		return $validate;
+	}
+
+	public function correct_type($str)
+	{
+		if ((int)$str == -1)
+		{
+			$this->form_validation
+				->set_message('correct_type', 'The Product type is invalid, please choose a type');
+			return false;
+		}
+		return true;
 	}
 
 	////////////API
@@ -73,6 +94,28 @@ class Api extends CI_Controller
 		$code=200;
 		$product =json_decode($this->input->post('product'));
 
+		$validate=$this->ProductValidation();
+		$this->form_validation->set_rules('name','Name',$validate['name']);
+		$this->form_validation->set_rules('type_id','Type',$validate['type_id']);
+		$this->form_validation->set_rules('price','Price',$validate['price']);
+		$this->form_validation->set_rules('quantity','Quantity',$validate['quantity']);
+
+		$this->form_validation->set_value('price',$product->price);
+		$this->form_validation->set_value('quantity',$product->quantity);
+		$this->form_validation->set_value('type_id',$product->type_id);
+		$this->form_validation->set_value('name_product',$product->name_product);
+
+		if(!$this->form_validation->run()){
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode(array(
+					'types' => 'Data invalid',
+                    'text' => 'Data',
+                    'type' => 'success'
+			)));
+		}
+
 		if((int)$product->id_product<=0){
 			return $this->output
             ->set_content_type('application/json')
@@ -104,6 +147,29 @@ class Api extends CI_Controller
 	{
 		$code=200;
 		$product =json_decode($this->input->post('product'));
+
+		$validate=$this->ProductValidation();
+		$this->form_validation->set_rules('name','Name',$validate['name']);
+		$this->form_validation->set_rules('type_id','Type',$validate['type_id']);
+		$this->form_validation->set_rules('price','Price',$validate['price']);
+		$this->form_validation->set_rules('quantity','Quantity',$validate['quantity']);
+
+		$this->form_validation->set_value('price',$product->price);
+		$this->form_validation->set_value('quantity',$product->quantity);
+		$this->form_validation->set_value('type_id',$product->type_id);
+		$this->form_validation->set_value('name',$product->name);
+
+		if(!$this->form_validation->run()){
+			return $this->output
+			->set_content_type('application/json')
+			->set_status_header(500)
+			->set_output(json_encode(array(
+					'types' => 'Data invalid',
+					'text' => 'Data',
+					'type' => 'success'
+			)));
+		}
+
 		$result = $this->ApiModel->create_product_api($product);
 
 		if(is_array($result) || !$result){

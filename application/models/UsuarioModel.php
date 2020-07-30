@@ -46,15 +46,29 @@ class UsuarioModel extends CI_Model
 	}
 	
 	public function edit_user($id){
-		$data = array(
-			'name' => $this->input->post('name'),
-			'email' => $this->input->post('email'),
-			'phone' => $this->input->post('phone'),
-			'age' => $this->input->post('age'),
-			'address' => $this->input->post('address'),
-			'country' => $this->input->post('country'),
-			'city' => $this->input->post('city'),
-		);
+		$query = $this->db->query('SELECT * FROM user WHERE id_user='.$id);
+		$result = $query->row();
+
+		if($result->email==$this->input->post('email')){
+			$data = array(
+				'name' => $this->input->post('name'),
+				'phone' => $this->input->post('phone'),
+				'age' => $this->input->post('age'),
+				'address' => $this->input->post('address'),
+				'country' => $this->input->post('country'),
+				'city' => $this->input->post('city'),
+			);
+		}else{
+			$data = array(
+				'name' => $this->input->post('name'),
+				'email' => $this->input->post('email'),
+				'phone' => $this->input->post('phone'),
+				'age' => $this->input->post('age'),
+				'address' => $this->input->post('address'),
+				'country' => $this->input->post('country'),
+				'city' => $this->input->post('city'),
+			);
+		}
 
 		try{
 			$this->db->where('id_user', $id);
@@ -74,7 +88,9 @@ class UsuarioModel extends CI_Model
 		try {
 			$this->db->where('id_user', $id);
 			$response = $this->db->delete('user');
-			return $response;
+			$rows_affected = $this->db->affected_rows();
+
+			return [$response,$rows_affected];
 		} catch (Exception $e) {
 			return false;
 		}

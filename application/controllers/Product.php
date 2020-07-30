@@ -10,6 +10,23 @@ class Product extends CI_Controller
 		parent::__construct();
 		$this->load->model('ProductModel');
 		$this->load->library('session');
+		$this->load->library('form_validation');
+
+
+		$validate = $this->ProductValidation();
+		$this->form_validation->set_rules('name','Name',$validate['name']);
+		$this->form_validation->set_rules('type_id','Type',$validate['type_id']);
+		$this->form_validation->set_rules('price','Price',$validate['price']);
+		$this->form_validation->set_rules('quantity','Quantity',$validate['quantity']);
+	}
+
+	public function ProductValidation(){
+		$validate['name']=['alpha_numeric_spaces','required','min_length[2]','max_length[50]'];
+		$validate['type_id']=['numeric','required','min_length[1]','callback_correct_type'];
+		$validate['price']=['numeric','required','min_length[1]'];
+		$validate['quantity']=['numeric','required','min_length[1]'];
+
+		return $validate;
 	}
 
 	/**
@@ -86,9 +103,26 @@ class Product extends CI_Controller
 		$info['content'] = 'product/create';
 		$this->load->view('layouts/index', $info);
 	}
+
+	public function correct_type($str)
+	{
+		if ((int)$str == -1)
+		{
+			$this->form_validation
+				->set_message('correct_type', 'The Product type is invalid, please choose a type');
+			return false;
+		}
+		return true;
+	}
 	
 	public function store()
 	{
+		if(!$this->form_validation->run()){
+			$info['type_products'] = $this->ProductModel->getTypes();
+			$info['content'] = 'product/create';
+			return $this->load->view('layouts/index', $info);
+		}
+
 		$response = $this->ProductModel->store_product();
 
 		if(!is_array($response) && $response){
@@ -130,11 +164,17 @@ class Product extends CI_Controller
 			redirect('/product');
 		}
 
+		if(!$this->form_validation->run()){
+			$info['type_products'] = $this->ProductModel->getTypes();
+			$info['content'] = 'product/edit';
+			return $this->load->view('layouts/index', $info);
+		}
+		
 		$result = $this->ProductModel->update_product($id);
 
 		if(!$result || is_array($result)){
 			$this->setSession('Internal error, The product with ID: '.$id.' was not updated','alert-danger');
-			redirect('product/edit/'.$id);
+			redirect('product/edit');
 		}
 
 		$this->setSession('The product with ID: '.$id.' has been updated','alert-success');
@@ -150,7 +190,7 @@ class Product extends CI_Controller
 
 		$result = $this->ProductModel->delete_product($id);
 
-		if(!$result || is_array($result)){
+		if($result[1]==0 || !$result[0]){
 			$this->setSession('The product with ID: '.$id.' was not deleted','alert-danger');
 		}else{
 			$this->setSession('The product with ID: '.$id.' has been deleted','alert-warning');
@@ -158,90 +198,4 @@ class Product extends CI_Controller
 
 		redirect('/product');
 	}
-
-	////////////API
-	public function getProducts()
-	{
-		$products = $this->ProductModel->list();
-
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'products' => $products,
-                    'text' => 'Data',
-                    'type' => 'success'
-            )));
-	}
-	
-	public function getProduct($id=null)
-	{
-		if(!$id){
-			return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'error' => 'The ID is required for the operation',
-                    'text' => 'Data',
-                    'type' => 'success'
-            )));
-		}
-
-		$product = $this->ProductModel->getProduct($id);
-
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'product' => $product,
-                    'text' => 'Data',
-                    'type' => 'success'
-            )));
-		
-	}
-	
-	public function getTypes()
-	{
-		$types = $this->ProductModel->getTypes();
-
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'types' => $types,
-                    'text' => 'Data',
-                    'type' => 'success'
-            )));
-		
-	}
-	
-	public function update_api()
-	{
-		$product =json_decode($this->input->post('product'));
-
-		if((int)$product->id_product<=0){
-			return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'types' => 'ID invalid',
-                    'text' => 'Data',
-                    'type' => 'success'
-			)));
-		}
-
-		print_r($product);
-
-		$result = $this->ProductModel->update_product_api($product);
-
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode(array(
-					'types' => $result,
-                    'text' => 'Data',
-                    'type' => 'success'
-            )));
-	}
-
 }
