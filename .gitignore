@@ -21,6 +21,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /nbproject/
 .idea/*
 
+/newionic_backup/ionic-capacitor-barcode-scanner/src/environments
+
 ## Sublime Text cache files
 *.tmlanguage.cache
 *.tmPreferences.cache

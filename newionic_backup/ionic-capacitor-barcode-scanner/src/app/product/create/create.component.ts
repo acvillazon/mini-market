@@ -14,8 +14,8 @@ export class CreateComponent implements OnInit {
 
   public product:Product={
     name_product:'',
-    price:100,
-    quantity:1,
+    price:null,
+    quantity:null,
     type_id:null,
     historical:null,
     id_product:null
@@ -47,10 +47,10 @@ export class CreateComponent implements OnInit {
 
     this.product_service.create(form.value).subscribe(result =>{
       if(result['types']){
-        this.presentToast('The product has been updated',2000,true);
+        this.presentToast('The product has been created',2000,true);
       }
     },err=>{
-      this.presentToast('The product has not been updated',2000,false);
+      this.presentToast('The product has not been created',2000,false);
     });
   }
 

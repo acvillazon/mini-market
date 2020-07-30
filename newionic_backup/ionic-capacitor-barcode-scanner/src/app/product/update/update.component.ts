@@ -26,17 +26,18 @@ export class UpdateComponent implements OnInit {
   public types:any[];
 
   constructor(private product_service:ProductService,
-              private routerActivated:ActivatedRoute,
-              public toastController: ToastController,
-              public router:Router          
+      private routerActivated:ActivatedRoute,
+      public toastController: ToastController,
+      public router:Router          
     ) 
-  {
-      this.product_id = routerActivated.snapshot.paramMap.get('id');
-
-      if(this.product_id){
-        this.getTypes();
-        this.loadProduct();
-      }
+    {
+      routerActivated.paramMap.subscribe(data =>{
+        if(data.has('id')){
+          this.product_id=data.get('id');
+          this.getTypes();
+          this.loadProduct();
+        }
+      })
   }
 
   ngOnInit() {}

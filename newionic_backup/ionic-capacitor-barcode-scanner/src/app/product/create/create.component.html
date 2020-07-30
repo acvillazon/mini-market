@@ -1,12 +1,11 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>CREATE PRODUCT</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-content style="padding: 10px;">
+    <div style="padding: 10px;">
       <!-- Inputs with labels -->
       <form autocomplete="off" (ngSubmit)="createProduct(form)" #form="ngForm">
         <ion-item>
@@ -16,9 +15,9 @@
             <ion-input class="form-control"
               type="text"
               name="name"
-              placeholder="name"
+              placeholder="Manzana"
               required
-              minlength="5"
+              minlength="3"
               [class.is-invalid]="name.invalid && name.touched"
               [ngModel]="product.name_product"
               #name="ngModel">
@@ -61,7 +60,7 @@
               #price="ngModel">
             </ion-input>
             <small *ngIf="price.invalid && price.touched" 
-              class="form-text text-danger">At least $100</small>
+              class="form-text text-danger">At least 100</small>
         </ion-item>
        
         <ion-item>
@@ -81,9 +80,8 @@
             <small *ngIf="quantity.invalid && quantity.touched" 
               class="form-text text-danger">At least 1 unit</small>
         </ion-item>
-  
+        <br>
         <ion-button type="submit" expand="block">Create</ion-button>  
       </form>
-    </ion-card-content>
-  </ion-card>
+    </div>
 </ion-content>
