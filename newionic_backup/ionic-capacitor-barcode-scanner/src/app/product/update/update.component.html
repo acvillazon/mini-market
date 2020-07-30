@@ -4,50 +4,94 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf="product">
+<ion-content *ngIf="product && types">
+  <ion-card >
     <ion-card-header>
       <ion-card-subtitle>ID: {{product.id_product}}</ion-card-subtitle>
       <ion-card-title>{{product.name_product | titlecase}}</ion-card-title>
     </ion-card-header>
   </ion-card>
     
-  <div style="padding-top: 0px; padding: 0px 10px;">
+  <div style="padding-top: 0px; padding: 0px 10px;" *ngIf="product">
+
+    <form autocomplete="off" (ngSubmit)="updateProduct(form,quantity.value)" #form="ngForm">
     <!-- Inputs with labels -->
     <ion-item>
       <ion-label color="primary" position="floating">
         <h1>Name</h1>
       </ion-label>
-      <ion-input type="text" minlength="2" maxlength="30" required 
-      [(ngModel)]='product.name_product'></ion-input>
+      <ion-input 
+        type="text" 
+        minlength="2" 
+        maxlength="30" 
+        required
+        placeholder="Manzana"
+        [(ngModel)]='product.name_product'
+        name="name"
+        #name="ngModel"
+        [class.is-invalid]="name.invalid && name.touched"
+
+        ></ion-input>
+        <small *ngIf="name.invalid && name.touched" 
+          class="form-text text-danger">At least 5 characters
+        </small>
     </ion-item>
     
     <ion-item>
       <ion-label color="primary" >Type</ion-label>
-      <ion-select required [value]="product.type_id">
+      <ion-select 
+          name="type_id"
+          required
+          [disabled]="types.length==0"
+          [class.is-invalid]="types_.invalid && types_.touched"
+          [(ngModel)]="product.type_id"
+          #types_="ngModel">
         <ion-select-option *ngFor="let item of types" [value]="item.id_type">{{item.name_type}}</ion-select-option>
       </ion-select>
+      <small *ngIf="types_.invalid && types_.touched" 
+          class="form-text text-danger">The field is required
+      </small>
     </ion-item>
     
     <ion-item>
       <ion-label color="primary" position="floating">
         <h1>Price</h1>
       </ion-label>
-      <ion-input type="number" min="50" required [(ngModel)]='product.price'></ion-input>
+      <ion-input 
+        type="number"
+        name="price"
+        placeholder="$0"
+        required
+        minlength="100" 
+        [(ngModel)]="product.price"
+        [class.is-invalid]="price.invalid && price.touched"
+        #price="ngModel"></ion-input>
+        <small *ngIf="price.invalid && price.touched" 
+        class="form-text text-danger">At least 100</small>
     </ion-item>
     
     <ion-item>
       <ion-label color="primary" position="floating">
-        <h1>Quantity (stock: {{product.quantity}} )</h1>
+        <h1>Quantity (stock: {{current}} )</h1>
       </ion-label>
-      <ion-input #quantity type="number" min="1" required value="0"></ion-input>
+      <ion-input
+        type="number"
+        name="quantity"
+        placeholder="0"
+        required
+        min="1"
+        value=0
+        (ngModel)="product.quantity"
+        [class.is-invalid]="quantity.invalid && quantity.touched"
+        #quantity="ngModel"></ion-input>
     </ion-item>
     
     <br>
     <ion-button
-    
-    (click)="updateProduct(quantity.value)" 
+    type="submit"
     expand="block" color="primary">Update</ion-button>
+
+  </form>
     
   </div>
 </ion-content>

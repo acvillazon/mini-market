@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="types">
     <div style="padding: 10px;">
       <!-- Inputs with labels -->
       <form autocomplete="off" (ngSubmit)="createProduct(form)" #form="ngForm">

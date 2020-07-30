@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 interface Product{
   id_product:Number
@@ -22,15 +23,16 @@ export class UpdateComponent implements OnInit {
 
   public product_id:any;
   public product:Product;
+  public current:Number;
 
   public types:any[];
 
   constructor(private product_service:ProductService,
-      private routerActivated:ActivatedRoute,
-      public toastController: ToastController,
-      public router:Router          
+              private routerActivated:ActivatedRoute,
+              public toastController: ToastController,
+              public router:Router          
     ) 
-    {
+  {
       routerActivated.paramMap.subscribe(data =>{
         if(data.has('id')){
           this.product_id=data.get('id');
@@ -45,6 +47,7 @@ export class UpdateComponent implements OnInit {
   loadProduct(){
     this.product_service.getProduct(this.product_id).subscribe(product =>{
       this.product=product['product'];
+      this.current=product['product'].quantity;
     });
   }
   
@@ -54,7 +57,13 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  updateProduct(quantity:any){
+  updateProduct(form:NgForm,quantity:any){
+    if(form.invalid){
+      Object.values(form.controls).forEach(data =>{
+        data.markAsTouched();
+      }); return;
+    }
+
     this.product.quantity=Number(quantity);
     this.product_service.update(this.product).subscribe(result =>{
       if(result['types']){
